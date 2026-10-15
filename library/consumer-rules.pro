@@ -1,0 +1,3 @@
+-keep class com.iflytek.** { *; }
+-keep class com.xbdlib.speech.** { *; }
+-dontwarn com.iflytek.**

@@ -1,0 +1,10 @@
+pluginManagement {
+    repositories { google(); mavenCentral(); gradlePluginPortal() }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories { google(); mavenCentral() }
+}
+rootProject.name = 'EasyIFlyAndroid'
+include ':library'
+if (providers.gradleProperty('withSample').isPresent()) include ':sample'

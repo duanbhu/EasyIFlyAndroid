@@ -1,0 +1,12 @@
+.gradle/
+**/build/
+local.properties
+dist/
+.idea/
+*.iml
+.DS_Store
+*.log
+# Commit the Gradle wrapper, bundled Msc.jar and both libmsc.so build inputs.
+!gradle/wrapper/gradle-wrapper.jar
+!library/libs/Msc.jar
+!library/src/main/jniLibs/**/*.so
