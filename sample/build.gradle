@@ -3,6 +3,9 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+def speechSampleAppId = providers.gradleProperty('iflytekAppId')
+    .orElse(providers.environmentVariable('IFLYTEK_APP_ID')).getOrElse('')
+
 android {
     namespace 'com.xbdlib.speech.sample'
     compileSdk 34
@@ -11,8 +14,8 @@ android {
         minSdk 23
         targetSdk 34
         versionCode 1
-        versionName '1.0'
-        buildConfigField 'String', 'IFLYTEK_APP_ID', '"YOUR_APP_ID"'
+        versionName '1.0.0'
+        buildConfigField 'String', 'IFLYTEK_APP_ID', groovy.json.JsonOutput.toJson(speechSampleAppId)
     }
     buildTypes {
         release { minifyEnabled true; signingConfig signingConfigs.debug; proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro' }

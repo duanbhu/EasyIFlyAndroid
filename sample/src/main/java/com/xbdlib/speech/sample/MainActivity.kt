@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.xbdlib.speech.SpeechRecognitionPanel
 import com.xbdlib.speech.SpeechRecognitionListener
 import com.xbdlib.speech.SpeechRecognitionState
@@ -21,6 +22,14 @@ class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (BuildConfig.IFLYTEK_APP_ID.isBlank()) {
+            setContentView(TextView(this).apply {
+                text = "请配置讯飞 App ID 后重新构建示例"
+                textSize = 18f
+                setPadding(32, 48, 32, 32)
+            })
+            return
+        }
         redTheme = savedInstanceState?.getBoolean("red_theme")
             ?: (intent.getStringExtra("speech_theme") == "red")
         panel = SpeechRecognitionPanel(this).apply {
@@ -74,7 +83,7 @@ class MainActivity : Activity() {
     }
 
     override fun onDestroy() {
-        panel.release()
+        if (::panel.isInitialized) panel.release()
         super.onDestroy()
     }
 }

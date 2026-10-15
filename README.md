@@ -1,12 +1,14 @@
 # EasyIFlyAndroid
 
+当前版本：`1.0.0`，Git 标签：`v1.0.0`。
+
 独立 Android 语音识别库，默认逻辑对齐 Swift EasyIFly。可单独打开、构建和维护，不需要 xbd_library 工程或上级目录中的文件。讯飞 SDK、两个 ARM ABI 的原生库及 UI 主题均包含在本工程内。
 
 - 包名：`com.xbdlib.speech`
 - Android：minSdk 23、compileSdk 34
 - ABI：`arm64-v8a`、`armeabi-v7a`
 - Kotlin API：1.8；独立 AAR 已合并讯飞类，无需额外添加 `Msc.jar`
-- 示例 App ID：`YOUR_APP_ID`；库本身由宿主传入 App ID
+- 仓库不包含真实 App ID；示例构建时传入，库本身由宿主传入
 
 ## 工程结构
 
@@ -103,11 +105,19 @@ setContentView(panel)
 
 `bind(owner)` 是兼容入口，只重建控制器，不会自动注册生命周期。设置 App ID 已会创建控制器。
 
-## App ID 与 SDK 绑定
+## App ID 配置与 SDK 绑定
 
-当前示例使用用户确认的 Android App ID `YOUR_APP_ID`，与原 xbd_library 示例及 SDK 注释 `Android_iat1143_YOUR_APP_ID (V1143)` 对应。此前使用 `YOUR_APP_ID` 时真机返回 `10407`（用户校验失败）；切换为 `YOUR_APP_ID` 后已进入聆听，未再出现该错误。用户反馈号码识别正确并自动关闭，完整自动化结果取证及准确率、耗时、断网验收仍待完成。
+示例默认不配置 App ID，启动时显示配置提示，不初始化讯飞 SDK。使用自己的 App ID 构建：
 
-App ID 需与下载的 SDK 保持一致。继续使用 `YOUR_APP_ID` 时，请将对应 Android SDK 中的 `Msc.jar` 和两种 ARM ABI 的 `libmsc.so` 分别替换到 `library/libs/` 与 `library/src/main/jniLibs/`，重新运行构建脚本。错误证据和原配置位置见 `VERIFICATION.md`。
+```bash
+IFLYTEK_APP_ID=YOUR_APP_ID ./tools/build-speech.sh
+# 或使用 Gradle 参数：
+./tools/build-speech.sh -PiflytekAppId=YOUR_APP_ID
+```
+
+Gradle 参数 `iflytekAppId` 优先于环境变量 `IFLYTEK_APP_ID`。真实 App ID 只在本机构建时提供，不写入仓库源码或文档；生成的示例 APK 会包含传入的值，`dist/` 和构建目录已忽略。
+
+App ID 需与下载的 SDK 保持一致，否则可能返回 `10407`（用户校验失败）。如果需要替换 SDK，请将对应 Android SDK 中的 `Msc.jar` 和两种 ARM ABI 的 `libmsc.so` 分别替换到 `library/libs/` 与 `library/src/main/jniLibs/`，再重新构建。库的 AAR 不内置 App ID。
 
 ## 识别规则
 
